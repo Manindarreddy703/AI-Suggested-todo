@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 const TaskManager = () => {
     const [tasks, setTasks] = useState([]);
     const [task, setTask] = useState("");
     const [suggestion, setSuggestion] = useState("");
+
     useEffect(() => {
         const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
         setTasks(storedTasks);
@@ -12,7 +14,6 @@ const TaskManager = () => {
     useEffect(() => {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }, [tasks]);
-
 
     const addTask = () => {
         if (task.trim() === "") {
@@ -25,11 +26,13 @@ const TaskManager = () => {
     };
 
     const getSuggestion = async () => {
-        const API_KEY = "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"; // Secured key
+        const API_KEY = process.env.REACT_APP_OPENAI_API_KEY; // Fetch from environment variables
+
         if (!API_KEY) {
             console.error("Missing OpenAI API key.");
             return;
         }
+
         try {
             const response = await axios.post(
                 "https://api.openai.com/v1/completions",
@@ -50,7 +53,6 @@ const TaskManager = () => {
             console.error("Error fetching suggestion:", error);
         }
     };
-
 
     const deleteTask = (id) => {
         const updatedTasks = tasks.filter(task => task.id !== id);

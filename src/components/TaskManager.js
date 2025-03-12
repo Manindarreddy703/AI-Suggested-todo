@@ -32,6 +32,13 @@ const TaskManager = () => {
             console.error("Missing OpenAI API key.");
             return;
         }
+console.log({
+    url: "https://api.openai.com/v1/completions",
+    headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
+    }
+});
 
         try {
             const response = await axios.post(
